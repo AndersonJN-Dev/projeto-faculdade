@@ -49,7 +49,6 @@ def cadastrar_empresa():
                 comando = "INSERT INTO empresa1 (nome, cnpj, endereco, telefone) VALUES (?, ?, ?, ?)"
                 cursor.execute(comando, (nomeEmpresa, cnpj, endereco, telefone))
                 cursor.commit()
-                cursor.close()
                 return f"""Sucesso ao cadastrar empresa, clique no botão para voltar para a home
                         <a href="/">
                             <button>Voltar</button>
@@ -77,7 +76,6 @@ def cadastrar_cliente():
                 comando = "INSERT INTO clientes1 (nome, cpf, endereco, telefone) VALUES (?, ?, ?, ?)"
                 cursor.execute(comando, (nome, cpf, endereco, telefone))
                 cursor.commit()
-                cursor.close()
                 return f"""Sucesso ao cadastrar cliente, clique no botão para voltar para a home
                         <a href="/">
                             <button>Voltar</button>
