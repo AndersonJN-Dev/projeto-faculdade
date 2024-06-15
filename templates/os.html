@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordens de Serviço</title>
+</head>
+<body>
+    <h1>Ordens de Serviço</h1>
+    <a href="{{url_for('home')}}">
+        <button>Voltar</button>
+    </a>
+    <h2>Cadastro de Ordem de Serviço</h2>
+    <form method="post" action="{{ url_for('cadastrar_ordem_de_servico') }}">
+        <label for="clientes">Selecione um cliente:</label>
+        <select name="cliente" id="select-clientes" required>
+            <option value=""></option>
+            {% for cliente in clientes %}
+                <option value="{{ cliente.id }}">{{ cliente.nome }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="produto">Selecione o produto:</label>
+        <select name="produto" id="select-produto" required>
+            <option value=""></option>
+            {% for produto in produtos %}
+                <option value="{{ produto.id }}">{{ produto.descricao }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="data-inicio">Insira a data de ínicio:</label>
+        <input type="date" id="data-inicio" name="data-inicio" required>
+
+        <label for="data-fim">Insira a data de conclusão:</label>
+        <input type="date" id="data-fim" name="data-fim">
+
+        <label for="descricao-servico">Descrição do serviço:</label>
+        <input type="text" id="descricao-servico" name="descricao-servico" required>
+
+        <label for="valor-total">Valor Total:</label>
+        <input type="number" id="valor-total" name="valor-total" placeholder="R$" required>
+
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <h2>Lista de Ordens de Serviço</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Número da OS</th>
+                <th>Código do Cliente</th>
+                <th>Código do Produto</th>
+                <th>Data Ínicio</th>
+                <th>Data Fim</th>
+                <th>Descrição do Serviço</th>
+                <th>Valor Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ordem in ordens %}
+            <tr>
+                <td>{{ ordem.id }}</td>
+                <td>{{ ordem.cliente_id }}</td>
+                <td>{{ ordem.produto_id }}</td>
+                <td>{{ ordem.data_inicio }}</td>
+                <td>{{ ordem.data_fim }}</td>
+                <td>{{ ordem.descricao_servico }}</td>
+                <td>{{ ordem.valor_total }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
