@@ -49,6 +49,16 @@ def produtos():
     produtos = cursor.fetchall()
     return render_template("produtos.html", produtos=produtos)
 
+@app.route("/ordem-de-servico")
+def os():
+    cursor.execute("SELECT id, cliente_id, produto_id, data_inicio, data_fim, descricao_servico, valor_total FROM ordens_de_servico")
+    ordens = cursor.fetchall()
+    cursor.execute("SELECT id, nome, cpf, endereco, telefone FROM clientes1")
+    clientes = cursor.fetchall()
+    cursor.execute("SELECT id, descricao, estoque, valorUnitario FROM produtos")
+    produtos = cursor.fetchall()
+    return render_template("os.html", ordens=ordens, clientes=clientes, produtos=produtos)
+
 @app.route('/cadastrar-empresa', methods=['POST'])
 def cadastrar_empresa():
     if request.method == 'POST':
@@ -76,7 +86,7 @@ def cadastrar_empresa():
                         </a>"""
         else:
             return "Erro ao conectar ao banco de dados."
-        
+   
 @app.route('/cadastrar-cliente', methods=['POST'])
 def cadastrar_cliente():
     if request.method == 'POST':
@@ -125,6 +135,36 @@ def cadastrar_produto():
             except pyodbc.Error as e:
                 print(f"Erro ao inserir dados no banco de dados: {e}")
                 return f"""Erro ao cadastrar produto, clique no botão para voltar para a home
+                        <a href="/">
+                            <button>Voltar</button>
+                        </a>"""
+        else:
+            return "Erro ao conectar ao banco de dados."
+        
+@app.route('/cadastrar-ordem-de-servico', methods=['POST'])
+def cadastrar_ordem_de_servico():
+    if request.method == 'POST':
+        cliente = request.form['cliente']
+        produto = request.form['produto']
+        data_inicio = request.form['data-inicio']
+        data_fim = request.form['data-fim']
+        descricao_servico = request.form['descricao-servico']
+        valor_total = request.form['valor-total']
+
+        if conexao:
+            try:
+                comando = "INSERT INTO ordens_de_servico (cliente_id, produto_id, data_inicio, data_fim, descricao_servico, valor_total) VALUES (?, ?, ?, ?, ?, ?)"
+                cursor.execute(comando, (cliente, produto, data_inicio, data_fim, descricao_servico, valor_total))
+                cursor.commit()
+                # cursor.close()
+                return f"""Sucesso ao cadastrar a ordem de serviço, clique no botão para voltar para a home
+                        <a href="/">
+                            <button>Voltar</button>
+                        </a>"""
+
+            except pyodbc.Error as e:
+                print(f"Erro ao inserir dados no banco de dados: {e}")
+                return f"""Erro ao cadastrar a ordem de serviço, clique no botão para voltar para a home
                         <a href="/">
                             <button>Voltar</button>
                         </a>"""
